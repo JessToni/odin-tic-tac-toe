@@ -33,7 +33,6 @@ const gameBoardModule = (() => {
 
         reset() {
             board = [[null, null, null],[null, null, null],[null, null, null]];
-
         },
     };
 })();
