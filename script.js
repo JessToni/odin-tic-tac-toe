@@ -1,3 +1,38 @@
+//Modal functionality
+const modalTrigger = document.getElementById('modal-trigger');
+const modalContainer = document.getElementById('modal-container');
+const playPersonButton = document.getElementById('play-person');
+const playAIButton = document.getElementById('play-ai');
+
+
+function showModal() {
+    modalContainer.style.display = 'flex';
+}
+
+function hideModal() {
+    modalContainer.style.display = 'none';
+}
+
+modalTrigger.addEventListener('click', () => {
+    showModal();
+});
+
+playPersonButton.addEventListener('click', () => {
+    alert('You chose to play with another person.')
+    hideModal();
+});
+
+playAIButton.addEventListener('click', () => {
+    alert('You chose to play with AI');
+    hideModal();
+})
+
+modalContainer.addEventListener('click', (e) => {
+    if (e.target === modalContainer) {
+        hideModal();
+    }
+});
+
 //Create module for the game board
 const gameBoardModule = (() => {
     //Private variable to store the board state
