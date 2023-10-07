@@ -33,6 +33,19 @@ modalContainer.addEventListener('click', (e) => {
     }
 });
 
+//Game board functionality
+const cells = document.querySelectorAll('.cell');
+
+cells.forEach((cell) => {
+    cell.addEventListener('click', () => {
+        if (!cell.textContent) {
+            const row = parseInt(cell.getAttribute('data-row'));
+            const col = parseInt(cell.getAttribute('data-col'));
+            alert('Hello');
+        }
+    });
+});
+
 //Create module for the game board
 const gameBoardModule = (() => {
     //Private variable to store the board state
