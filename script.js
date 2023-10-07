@@ -84,3 +84,21 @@ const gameBoardModule = (() => {
         },
     };
 })();
+
+const PlayerFactory = () => {
+    let currentPlayer = 'X';
+
+    return {
+        getCurrentPlayer() {
+            return currentPlayer;
+        },
+
+        switchPlayer() {
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        },
+
+        resetPlayer() {
+            currentPlayer = 'X';
+        },
+    };
+};
