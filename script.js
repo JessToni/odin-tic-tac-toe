@@ -3,7 +3,7 @@ const modalTrigger = document.getElementById('modal-trigger');
 const modalContainer = document.getElementById('modal-container');
 const playPersonButton = document.getElementById('play-person');
 const playAIButton = document.getElementById('play-ai');
-
+const gameContainer = document.getElementById('game-container');
 
 function showModal() {
     modalContainer.style.display = 'flex';
@@ -18,8 +18,8 @@ modalTrigger.addEventListener('click', () => {
 });
 
 playPersonButton.addEventListener('click', () => {
-    alert('You chose to play with another person.')
     hideModal();
+    gameContainer.style.display = 'flex';
 });
 
 playAIButton.addEventListener('click', () => {
