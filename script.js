@@ -54,6 +54,33 @@ const gameBoardModule = (() => {
     //Private function to check if a cell is empty
     const isEmpty = (row, col) => board[row][col] === null;
 
+    const checkHorizontal = () => {
+        for (let row = 0; row < 3; row++) {
+            if (board[row][0] === board[row][1] && board[row][1] === board[row][2] && board[row][0] !== null) {
+                return board[row][0];
+            }
+        }
+        return null;
+    }
+
+    const checkVertical = () => {
+        for (let col = 0; col < 3; col++) {
+            if (board[0][col] === board[1][col] && board[1][col] === board[2][col] && board[0][col] !== null) {
+                return board[0][col];
+            }
+        }
+        return null;
+    }
+
+    const checkDiagonal = () => {
+        if (board[0][0] === board[1][1] && board[1][1] === board[2][2] || board[0][2] === board[1][1] && board[1][1] === board[2][0]) {
+            if (board[1][1] !== null) {
+                return board[1][1];
+            }
+        }
+        return null;
+    }
+
     return {
         //Method for making a move on the board
         makeMove(row, col, player) {
@@ -76,7 +103,21 @@ const gameBoardModule = (() => {
         },
 
         checkWinner() {
-            //Implement a logic for finding the winner
+            const horizontalWinner = checkHorizontal();
+            const verticalWinner = checkVertical();
+            const diagonalWinner = checkDiagonal();
+            
+            if (horizontalWinner) {
+                return horizontalWinner;
+            }
+            if (verticalWinner) {
+                return verticalWinner;
+            }
+            if (diagonalWinner) {
+                return diagonalWinner;
+            }
+
+            return null;
         },
 
         reset() {
