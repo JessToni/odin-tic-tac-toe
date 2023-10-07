@@ -1,51 +1,3 @@
-//Modal functionality
-const modalTrigger = document.getElementById('modal-trigger');
-const modalContainer = document.getElementById('modal-container');
-const playPersonButton = document.getElementById('play-person');
-const playAIButton = document.getElementById('play-ai');
-const gameContainer = document.getElementById('game-container');
-
-function showModal() {
-    modalContainer.style.display = 'flex';
-}
-
-function hideModal() {
-    modalContainer.style.display = 'none';
-}
-
-modalTrigger.addEventListener('click', () => {
-    showModal();
-});
-
-playPersonButton.addEventListener('click', () => {
-    hideModal();
-    gameContainer.style.display = 'flex';
-});
-
-playAIButton.addEventListener('click', () => {
-    alert('You chose to play with AI');
-    hideModal();
-})
-
-modalContainer.addEventListener('click', (e) => {
-    if (e.target === modalContainer) {
-        hideModal();
-    }
-});
-
-//Game board functionality
-const cells = document.querySelectorAll('.cell');
-
-cells.forEach((cell) => {
-    cell.addEventListener('click', () => {
-        if (!cell.textContent) {
-            const row = parseInt(cell.getAttribute('data-row'));
-            const col = parseInt(cell.getAttribute('data-col'));
-            alert('Hello');
-        }
-    });
-});
-
 //Create module for the game board
 const gameBoardModule = (() => {
     //Private variable to store the board state
@@ -93,7 +45,7 @@ const gameBoardModule = (() => {
 
         isFull() {
             for (let row = 0; row < 3; row++) {
-                for (let col = 0; col < 3; row++) {
+                for (let col = 0; col < 3; col++) {
                     if (isEmpty(row, col)) {
                         return false; //There's an empty cell, the board is not full
                     }
@@ -143,3 +95,75 @@ const PlayerFactory = () => {
         },
     };
 };
+
+//Modal functionality
+const modalTrigger = document.getElementById('modal-trigger');
+const modalContainer = document.getElementById('modal-container');
+const playPersonButton = document.getElementById('play-person');
+const playAIButton = document.getElementById('play-ai');
+const gameContainer = document.getElementById('game-container');
+
+function showModal() {
+    modalContainer.style.display = 'flex';
+}
+
+function hideModal() {
+    modalContainer.style.display = 'none';
+}
+
+modalTrigger.addEventListener('click', () => {
+    showModal();
+});
+
+playPersonButton.addEventListener('click', () => {
+    hideModal();
+    gameContainer.style.display = 'flex';
+});
+
+playAIButton.addEventListener('click', () => {
+    alert('You chose to play with AI');
+    hideModal();
+})
+
+modalContainer.addEventListener('click', (e) => {
+    if (e.target === modalContainer) {
+        hideModal();
+    }
+});
+
+//Game board functionality
+const cells = document.querySelectorAll('.cell');
+const playerFactory = PlayerFactory();
+
+cells.forEach((cell) => {
+    cell.addEventListener('click', () => {
+        if (!cell.textContent) {
+            const row = parseInt(cell.getAttribute('data-row'));
+            const col = parseInt(cell.getAttribute('data-col'));
+            
+            const currentPlayer = playerFactory.getCurrentPlayer()
+
+            const moveSuccess = gameBoardModule.makeMove(row, col, currentPlayer);
+
+            if (moveSuccess) {
+                cell.textContent = currentPlayer;
+
+                playerFactory.switchPlayer();
+
+                const winner = gameBoardModule.checkWinner();
+                const isBoardFull = gameBoardModule.isFull();
+
+                if (winner) {
+                    setTimeout(() => {
+                        alert(`Player ${winner} wins!`);
+                    }, 100);
+                    
+                } else if (isBoardFull) {
+                    setTimeout(() => {
+                        alert('It\'s a tie!');
+                    }, 100);
+                }
+            }
+        }
+    });
+});
