@@ -141,10 +141,25 @@ modalContainer.addEventListener('click', (e) => {
 });
 
 //Game board functionality
+const gameBoardHeader = document.getElementById('game-board-header');
 const cells = document.querySelectorAll('.cell');
 const playerFactory = PlayerFactory();
 const restartButton = document.getElementById('restart-button');
-const gameBoardHeader = document.getElementById('game-board-header');
+const backButton = document.getElementById('main-menu');
+
+function resetGame() {
+    gameBoardHeader.textContent = 'Player vs. Player';
+
+    gameBoardModule.reset();
+
+    cells.forEach((cell) => {
+        cell.textContent = ''
+    });
+
+    playerFactory.resetPlayer();
+
+    gameBoardModule.setGameOver(false);
+}
 
 cells.forEach((cell) => {
     cell.addEventListener('click', () => {
@@ -187,16 +202,11 @@ cells.forEach((cell) => {
 
 //Event listener for the button that resets the board
 restartButton.addEventListener('click', () => {
+    resetGame();
+});
 
-    gameBoardHeader.textContent = 'Player vs. Player';
-
-    gameBoardModule.reset();
-
-    cells.forEach((cell) => {
-        cell.textContent = ''
-    });
-
-    playerFactory.resetPlayer();
-
-    gameBoardModule.setGameOver(false);
+//Event listener for back button that closes game-container page
+backButton.addEventListener('click', () => {
+    resetGame();
+    gameContainer.style.display = 'none';
 });
