@@ -147,6 +147,7 @@ const playerFactory = PlayerFactory();
 const restartButton = document.getElementById('restart-button');
 const backButton = document.getElementById('main-menu');
 
+//Resets game board, header, cells, isGameOver variable, and player
 function resetGame() {
     gameBoardHeader.textContent = 'Player vs. Player';
 
@@ -161,6 +162,7 @@ function resetGame() {
     gameBoardModule.setGameOver(false);
 }
 
+//Event listener for adding X or O on the cells that get clicked
 cells.forEach((cell) => {
     cell.addEventListener('click', () => {
         if (gameBoardModule.isGameOver()) {
@@ -187,13 +189,13 @@ cells.forEach((cell) => {
                     gameBoardModule.setGameOver(true);
                     setTimeout(() => {
                         gameBoardHeader.textContent = `Player ${winner} wins!`;
-                    }, 100);
+                    }, 50);
                     
                 } else if (isBoardFull) {
                     gameBoardModule.setGameOver(true);
                     setTimeout(() => {
                         gameBoardHeader.textContent = 'It\'s a tie!';
-                    }, 100);
+                    }, 50);
                 }
             }
         }
