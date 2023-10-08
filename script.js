@@ -2,6 +2,7 @@
 const gameBoardModule = (() => {
     //Private variable to store the board state
     let board = [[null, null, null],[null, null, null],[null, null, null]];
+    let gameIsOver = false;
 
     //Private function to check if a cell is empty
     const isEmpty = (row, col) => board[row][col] === null;
@@ -72,6 +73,14 @@ const gameBoardModule = (() => {
             return null;
         },
 
+        isGameOver() {
+            return gameIsOver;
+        },
+
+        setGameOver(value) {
+            gameIsOver = value;
+        },
+
         reset() {
             board = [[null, null, null],[null, null, null],[null, null, null]];
         },
@@ -134,9 +143,15 @@ modalContainer.addEventListener('click', (e) => {
 //Game board functionality
 const cells = document.querySelectorAll('.cell');
 const playerFactory = PlayerFactory();
+const restartButton = document.getElementById('restart-button');
+const gameBoardHeader = document.getElementById('game-board-header');
 
 cells.forEach((cell) => {
     cell.addEventListener('click', () => {
+        if (gameBoardModule.isGameOver()) {
+            return;
+        }
+
         if (!cell.textContent) {
             const row = parseInt(cell.getAttribute('data-row'));
             const col = parseInt(cell.getAttribute('data-col'));
@@ -154,16 +169,34 @@ cells.forEach((cell) => {
                 const isBoardFull = gameBoardModule.isFull();
 
                 if (winner) {
+                    gameBoardModule.setGameOver(true);
                     setTimeout(() => {
-                        alert(`Player ${winner} wins!`);
+                        gameBoardHeader.textContent = `Player ${winner} wins!`;
                     }, 100);
                     
                 } else if (isBoardFull) {
+                    gameBoardModule.setGameOver(true);
                     setTimeout(() => {
-                        alert('It\'s a tie!');
+                        gameBoardHeader.textContent = 'It\'s a tie!';
                     }, 100);
                 }
             }
         }
     });
+});
+
+//Event listener for the button that resets the board
+restartButton.addEventListener('click', () => {
+
+    gameBoardHeader.textContent = 'Player vs. Player';
+
+    gameBoardModule.reset();
+
+    cells.forEach((cell) => {
+        cell.textContent = ''
+    });
+
+    playerFactory.resetPlayer();
+
+    gameBoardModule.setGameOver(false);
 });
