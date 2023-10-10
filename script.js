@@ -111,6 +111,7 @@ const modalContainer = document.getElementById('modal-container');
 const playPersonButton = document.getElementById('play-person');
 const playAIButton = document.getElementById('play-ai');
 const gameContainer = document.getElementById('game-container');
+let isPlayerVsAI = false;
 
 function showModal() {
     modalContainer.style.display = 'flex';
@@ -126,12 +127,16 @@ modalTrigger.addEventListener('click', () => {
 
 playPersonButton.addEventListener('click', () => {
     hideModal();
+    isPlayerVsAI = false;
     gameContainer.style.display = 'flex';
+    console.log(`Player is playing against AI:${isPlayerVsAI}`)
 });
 
 playAIButton.addEventListener('click', () => {
-    alert('You chose to play with AI');
     hideModal();
+    isPlayerVsAI = true;
+    gameContainer.style.display = 'flex';
+    console.log(`Player is playing against AI:${isPlayerVsAI}`)
 })
 
 modalContainer.addEventListener('click', (e) => {
@@ -160,6 +165,47 @@ function resetGame() {
     playerFactory.resetPlayer();
 
     gameBoardModule.setGameOver(false);
+}
+
+//Function for AI to make a move after the player makes one
+function makeAIMove() {
+    const emptyCells = Array.from(cells).filter(cell => !cell.textContent);
+
+    if (emptyCells.length === 0) {
+        return;
+    }
+
+    const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+
+    const row = parseInt(randomCell.getAttribute('data-row'))
+    const col = parseInt(randomCell.getAttribute('data-col'))
+
+    const currentPlayer = playerFactory.getCurrentPlayer();
+
+    //Make the AI's move
+    const moveSuccess = gameBoardModule.makeMove(row, col, currentPlayer);
+
+    if (moveSuccess) {
+        randomCell.textContent = currentPlayer;
+
+        playerFactory.switchPlayer();
+
+        const winner = gameBoardModule.checkWinner();
+        const isBoardFull = gameBoardModule.isFull();
+
+        if (winner) {
+            gameBoardModule.setGameOver(true);
+            setTimeout(() => {
+                gameBoardHeader.textContent = `Player ${winner} wins!`;
+            }, 50);
+            
+        } else if (isBoardFull) {
+            gameBoardModule.setGameOver(true);
+            setTimeout(() => {
+                gameBoardHeader.textContent = 'It\'s a tie!';
+            }, 50);
+        }
+    }
 }
 
 //Event listener for adding X or O on the cells that get clicked
@@ -196,6 +242,11 @@ cells.forEach((cell) => {
                     setTimeout(() => {
                         gameBoardHeader.textContent = 'It\'s a tie!';
                     }, 50);
+                }
+
+                if (isPlayerVsAI) {
+                    console.log("I am playing with AI")
+                    makeAIMove()
                 }
             }
         }
