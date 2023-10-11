@@ -1,8 +1,21 @@
+@font-face {
+	font-family: Roboto-Light;
+	src: url(./fonts/Roboto-Light.ttf);
+  }
+
+
+:root {
+    --main-color: #363062;
+    --second-color: #F99417;
+    --font-color: #F5F5F5;
+    --font-family: Roboto-Light, sans serif;
+}
+
 body {
     margin: 0; /* Remove default margin */
     padding: 0; /* Remove default padding */
-    font-family: Arial, sans-serif; /* Choose an appropriate font family */
-    background-color: #f0f0f0; /* Set a background color */
+    font-family: var(--font-family); /* Choose an appropriate font family */
+    background-color: var(--main-color); /* Set a background color */
     color: #333; /* Set text color */
     display: flex;
     flex-direction: column; /* Stack child elements vertically */
@@ -11,10 +24,34 @@ body {
     height: 100vh; /* Use the full viewport height */
 }
 
+body h1 {
+    color: #F5F5F5;
+}
+
+.copyright {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 15px;
+}
+
+.copyright p {
+    color: var(--font-color);
+    font-size: 15px;
+}
+
+.copyright img {
+    width: 15px;
+    height: 15px;
+}
+
 #modal-trigger {
     padding: 10px;
-    background-color: #007bff;
-    color: #fff;
+    background-color: #F99417;
+    font-family: var(--font-family);
+    color: #F5F5F5;
+    font-weight: 800;
     border: none;
     cursor: pointer;
 }
